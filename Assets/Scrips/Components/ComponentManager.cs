@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ComponentManager : MonoBehaviour
 {
@@ -12,8 +13,11 @@ public class ComponentManager : MonoBehaviour
     public List<Item> itemDetails=new List<Item>();
     
     public List<ComponentBase> components = new List<ComponentBase>();
+    public EDirType type = EDirType.UP;
+    public EGridRotate Direction = EGridRotate.RIGHT;
     private void Awake()
     {
+        
         if (instance == null)
         {
             instance = this;
@@ -24,16 +28,60 @@ public class ComponentManager : MonoBehaviour
         }
     }
 
-    public SpriteRenderer CreateComponent(Grid grid,int id)
+    private void Update()
     {
-        var item=itemDetails.Select((i) => i.id == id);
-        
-        return null;
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+
+
+            
+            var dirMap = GridRotater.RotateDirMap(type, Direction);
+            
+            Debug.Log(dirMap);
+            Debug.Log(dirMap.ToString());
+            Debug.Log(Convert.ToString((int)dirMap, 2));
+        }
     }
 
-    public void GenerateComponentsJoint(List<GameObject> objects,Grid[,] grid)
+
+    /// <summary>
+    /// 创造配件
+    /// </summary>
+    /// <param name="id">配件的id</param>
+    /// <param name="position">生成位置</param>
+    /// <param name="parent">父物体</param>
+    /// <returns></returns>
+    public ComponentBase CreateComponent(int id,Vector3 position,Transform parent)
     {
+        var item=itemDetails.Find((i) => i.id == id);
+
+        var obj = Instantiate(item.prefeb,position,Quaternion.identity,parent);
+
+        var cmp = obj.GetComponent<ComponentBase>();
+
+        cmp.detail = item;
         
+        return cmp;
+    }
+
+    public void GenerateComponentsJoint(List<GameObject> objects,Grid[,] grids)
+    {
+        foreach (var grid in grids)
+        {
+            if (grid.Object_index != -1)
+            {
+
+                var cmp=objects[grid.Object_index].GetComponent<ComponentBase>();
+
+                var dirMap = GridRotater.RotateDirMap(cmp.detail.type, cmp._Direction);
+                
+
+            }
+                
+                
+                
+            objects[grid.Object_index].AddComponent<FixedJoint2D>();
+        }
     }
     
 }
