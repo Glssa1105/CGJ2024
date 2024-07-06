@@ -28,9 +28,12 @@ public class ComponentManager : MonoBehaviour
     {
         var item=itemDetails.Select((i) => i.id == id);
         
-        
-        
         return null;
+    }
+
+    public void GenerateComponentsJoint(List<GameObject> objects,Grid[,] grid)
+    {
+        
     }
     
 }
