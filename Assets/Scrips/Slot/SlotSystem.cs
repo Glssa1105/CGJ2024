@@ -23,12 +23,19 @@ public enum EDirType
 public struct Grid {
     public int x, y;
     public int Object_index;
+    public ItemState item;
     public Grid(int x,int y,int index)
     {
         this.x = x;
         this.y = y;
         this.Object_index = index;
+        item = new ItemState();
     }
+}
+
+public class ItemState
+{
+    EGridRotate rotation = EGridRotate.UP;
 }
 
 public class SlotSystem : MonoBehaviour
@@ -36,11 +43,15 @@ public class SlotSystem : MonoBehaviour
     public int m_GirdMap_X;
     public int m_GirdMap_Y;
     public Grid ActiveGrid;
-   
+    public bool isSeleting;
+
     private int m_index;
 
+    [NonSerialized]
     public bool[,] ableToPlace;
+    [NonSerialized]
     public Grid[,] GridMap;
+    [NonSerialized]
     public List<GameObject> m_objectList;
 
     [SerializeField]
@@ -48,7 +59,7 @@ public class SlotSystem : MonoBehaviour
 
 
     //绘制GridMap
-    public Vector3 StartPos;
+    public Transform StartPos;
     public GameObject testObject;
     public List<GameObject> GridList;
 
@@ -58,12 +69,17 @@ public class SlotSystem : MonoBehaviour
         GridMap = new Grid[m_GirdMap_Y, m_GirdMap_X];
         m_objectList = new List<GameObject>();
 
+        ActiveGrid = new Grid(0,0,-1);
         for(int i = 0;i<m_GirdMap_X;i++)
         {
-            
+            for(int j =0;j<m_GirdMap_Y;j++)
+            {
+                GridMap[j, i].Object_index = -1;
+            }
         }
 
     }
+
 
     private void Start()
     {
@@ -78,20 +94,25 @@ public class SlotSystem : MonoBehaviour
             {
                 if(i == ActiveGrid.x&& j == ActiveGrid.y)
                 {
-                    m_objectList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.blue;
+                    
+                    //m_objectList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.blue;
                 }
                 else if (ableToPlace[j, i] == true)
                 {
-                    m_objectList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.red;
+                    //m_objectList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.red;
                 }
 
 
             }
         }
+
+        MoveActiveGrid();
     }
 
-    public bool CheckPlaceable(Grid pos, Grid[] bias,EGridRotate rotate)
+    public bool CheckPlaceable(Item item,EGridRotate rotate)
     {
+        var pos = ActiveGrid;
+        var bias = item.biasList;
         foreach(var v in bias)
         {
             int cosAngle;
@@ -135,8 +156,10 @@ public class SlotSystem : MonoBehaviour
         return true;
     }
 
-    public void PlaceGrid(Grid pos, Grid[] bias,Item item,EGridRotate rotate)
+    public void PlaceGrid(Item item,EGridRotate rotate)
     {
+        var bias = item.biasList;
+        var pos = ActiveGrid;
         foreach (var v in bias)
         {
             int cosAngle;
@@ -173,7 +196,7 @@ public class SlotSystem : MonoBehaviour
 
         m_index++;
         //m_objectList内添加生成的物体
-        m_objectList.Add(Instantiate(testObject, StartPos+new Vector3(pos.x*distance, pos.y*distance, 0.0f), Quaternion.identity));
+        m_objectList.Add(Instantiate(testObject, transform.position+new Vector3(pos.x*distance, pos.y*distance, 0.0f), Quaternion.identity));
     }
 
     public void CreateGridMap()
@@ -182,27 +205,53 @@ public class SlotSystem : MonoBehaviour
         {
             for(int i = 0;i<m_GirdMap_X;i++)
             {
-                GridList.Add(Instantiate(testObject, StartPos + new Vector3(i * distance, j * distance, 0.0f), Quaternion.identity));
+                GridList.Add(Instantiate(testObject, transform.position + new Vector3(i * distance, j * distance, 0.0f), Quaternion.identity));
             }
         }
     }
 
-
-
-    public void Change2Market()
+    public void MoveActiveGrid()
     {
+        var x = ActiveGrid.x;
+        var y = ActiveGrid.y;
+        int dx = 0;
+        int dy = 0;
 
+        if (Input.GetKeyDown(KeyCode.A))
+            dx += -1;
+        if(Input.GetKeyDown(KeyCode.S))
+            dy += -1;
+        if(Input.GetKeyDown(KeyCode.D))
+            dx += 1;
+        if (Input.GetKeyDown(KeyCode.W))
+            dy += 1;
+
+        var nx = x +dx;
+        var ny = y +dy; 
+
+        if (nx < 0 || nx >= m_GirdMap_X || ny >= m_GirdMap_Y || ny < 0)
+        {
+            return;
+        }
+        if (ableToPlace[ny, nx] == true)
+        {
+            return;
+        }
+        
+
+        if (x == nx && y == ny)
+            return;
+        GridList[y*m_GirdMap_Y + x].GetComponent<SpriteRenderer>().color = Color.white;
+        GridList[ny * m_GirdMap_Y + nx].GetComponent<SpriteRenderer>().color = Color.blue;
+        ActiveGrid.x = nx;
+        ActiveGrid.y = ny;
     }
 
-    public void OnSlotSystemEnable()
+    public void SeletctTarget()
     {
         
     }
 
-    public void OnSlotSystemDisable()
-    {
-
-    }
-
+    
     
 }
