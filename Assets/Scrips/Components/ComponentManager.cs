@@ -110,21 +110,27 @@ public class ComponentManager : SingletonMono<ComponentManager>
     public void GenerateComponentsJoint(List<GameObject> objects, Grid[,] grids)
     {
         HashSet<KeyValuePair<int, int>> gridSet = new HashSet<KeyValuePair<int, int>>();
+        int index = 0;
         foreach (var grid in grids)
         {
-            
+
             if (grid.Object_index != -1)
             {
                 
-                Debug.Log(66666);
+
                 var cmp = objects[grid.Object_index].GetComponent<ComponentBase>();
 
                 var dirMap = GridRotater.RotateDirMap(cmp.detail.type, cmp._Direction);
 
-                var gridList = GridRotater.AccessMultiplePoints(new Vector2Int(grid.x, grid.y), dirMap, grids);
+               // Debug.Log(dirMap);
+                var gridList = GridRotater.AccessMultiplePoints(new Vector2Int(index%(grids.GetLength(1)),index/(grids.GetLength(1))), dirMap, grids);
 
+                //Debug.Log(gridList.Count);
+                
                 foreach (var nigger in gridList)
                 {
+                    Debug.Log(gridSet.Count);
+
                     if (gridSet.Contains(new KeyValuePair<int, int>(grid.Object_index, nigger.Value.Object_index))
                         || gridSet.Contains(new KeyValuePair<int, int>(nigger.Value.Object_index, grid.Object_index)))
                         continue;
@@ -189,6 +195,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
 
                 //if(objects.Count>grid.Object_index)objects[grid.Object_index].AddComponent<FixedJoint2D>();
             }
+            index++;
         }
     }
 }

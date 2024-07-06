@@ -363,7 +363,7 @@ Transform:
   m_GameObject: {fileID: 248200200}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.03, y: 2.68, z: 0}
+  m_LocalPosition: {x: -15, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1020,7 +1020,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8c3691d4c3981c442b882b492679d297, type: 2}
   type: 1
   Direction: 3
-  breakForce: 100000
+  breakForce: 1e+10
   skillMgr1: {fileID: 1697062419}
   skillMgr2: {fileID: 184506550}
   slotSystem1: {fileID: 1633764319}
@@ -1595,7 +1595,7 @@ Transform:
   m_GameObject: {fileID: 1633764317}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.8, y: 2.83, z: 0}
+  m_LocalPosition: {x: -15, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2263,7 +2263,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 79804326096570155, guid: 86cabda55fc85964b965b6b5aaf51bb8, type: 3}
       propertyPath: m_DynamicOccludee
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4994481735616213654, guid: 86cabda55fc85964b965b6b5aaf51bb8, type: 3}
       propertyPath: m_Name

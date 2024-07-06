@@ -82,13 +82,17 @@ public class GridRotater
         Dictionary<EDirType,Grid> gridList = new Dictionary<EDirType,Grid>();
         foreach (EDirType direction in System.Enum.GetValues(typeof(EDirType)))
         {
+//                Debug.Log(dirMap+""+direction);
             if ((dirMap & direction) == direction)
             {
                 Vector2Int newPosition = GetNewPosition(currentPosition, direction);
+                newPosition = new Vector2Int(newPosition.y, newPosition.x);
+               // Debug.Log(newPosition);
                 if (IsValidPosition(newPosition,grids))
                 {
                     Grid value = grids[newPosition.x, newPosition.y];
                     gridList.Add(direction,value);
+                    Debug.Log(value);
                 }
             }
         }
@@ -97,6 +101,8 @@ public class GridRotater
     }
     private static bool IsValidPosition(Vector2Int position,Grid[,] grid)
     {
+
+        
         return position.x >= 0 && position.x < grid.GetLength(0) &&
                position.y >= 0 && position.y < grid.GetLength(1);
     }

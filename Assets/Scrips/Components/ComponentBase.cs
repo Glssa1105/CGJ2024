@@ -14,6 +14,7 @@ public class ComponentBase : MonoBehaviour
 
     public KeyCode keyCode;
     
+    
     public SpriteRenderer Sr => sr??=GetComponent<SpriteRenderer>();
 
     private SpriteRenderer sr;
@@ -21,6 +22,8 @@ public class ComponentBase : MonoBehaviour
     private Rigidbody2D rb;
     
     public Rigidbody2D Rb => rb ??= GetComponent<Rigidbody2D>();
+
+    private bool destroyed;
 
 
     public virtual void Start()
@@ -46,6 +49,8 @@ public class ComponentBase : MonoBehaviour
         // GetComponent<Collider2D>().enabled = true;
         // GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Dynamic;
         
+        if(destroyed)return;
+        
         foreach (var col in GetComponentsInChildren<Collider2D>(true))
         {
             col.enabled = true;
@@ -58,6 +63,11 @@ public class ComponentBase : MonoBehaviour
         
         Sr.color=Color.white;
         
+    }
+
+    private void OnDestroy()
+    {
+        destroyed = true;
     }
 
     protected virtual void Update()
