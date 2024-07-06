@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 using Random = UnityEngine.Random;
 
 public class GroundManager : SingletonMono<GroundManager>
@@ -11,6 +12,8 @@ public class GroundManager : SingletonMono<GroundManager>
     private int[] randomSequence;
 
 
+    public SpriteShape ssp1, ssp2;
+    
     private void Start()
     {
         SpawnGround();
@@ -38,6 +41,8 @@ public class GroundManager : SingletonMono<GroundManager>
             GameObject groundPrefab = groundPrefabs[prefabIndex];
             Vector3 spawnPosition = new Vector3(i * groundWidth, 0, 0);
             Instantiate(groundPrefab, spawnPosition, Quaternion.identity, transform);
+            var obj2=Instantiate(groundPrefab, spawnPosition+new Vector3(0,100,0), Quaternion.identity, transform);
+            obj2.GetComponent<SpriteShapeController>().spriteShape = ssp2;
         }
     }
 }
