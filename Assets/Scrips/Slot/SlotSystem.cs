@@ -84,6 +84,7 @@ public class SlotSystem : MonoBehaviour
         ableToPlace = new bool[m_GirdMap_Y, m_GirdMap_X];
         GridMap = new Grid[m_GirdMap_Y, m_GirdMap_X];
         m_objectList = new List<GameObject>();
+        marketSystem = GetComponent<MarketSystem>();
 
         ActiveGrid = new Grid(0,0,-1);
         for(int i = 0;i<m_GirdMap_X;i++)
@@ -348,7 +349,7 @@ public class SlotSystem : MonoBehaviour
             }
             else if(isSeleting == true && CheckPlaceable(SeletingCB.detail,SeletingCB._Direction))
             {
-
+                SeletingCB.SetColorWhite();                
                 isSeleting = false;
                 PlaceGrid(SeletingCB.detail, SeletingCB._Direction, false);
                 SeletingIndex = -1;
