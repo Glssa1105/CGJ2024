@@ -67,7 +67,10 @@ public class ComponentBase : MonoBehaviour
     {
         Sr.color=new Color(0f,255f,0f,1f);
     }
-
+    public void SetColorWhite()
+    {
+        Sr.color=Color.white;
+    }
     // public Vector3 GetRotateDir(EGridRotate rotate)
     // {
     //     switch (rotate)
