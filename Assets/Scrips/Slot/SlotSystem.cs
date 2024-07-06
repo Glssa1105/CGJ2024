@@ -45,6 +45,8 @@ public class SlotSystem : MonoBehaviour
     [Tooltip("是否为玩家1，否则玩家2")]
     public bool ifPlayer1;
 
+    public bool EditingSlotSystem;
+
     public int m_GirdMap_X;
     public int m_GirdMap_Y;
     public Grid ActiveGrid;
@@ -80,7 +82,7 @@ public class SlotSystem : MonoBehaviour
     public Item testItem;
     public List<GameObject> GridList;
 
-    private bool EditingSlotSystem;
+
 
     private void Awake()
     {
@@ -122,11 +124,6 @@ public class SlotSystem : MonoBehaviour
             {
                 EditingSlotSystem = false;
                 ChangeToMarket();
-            }
-            else
-            {
-                EnterSlotSystem();
-                EnterAndSelectItem(testItem, EGridRotate.UP);
             }
         }
 
@@ -404,14 +401,16 @@ public class SlotSystem : MonoBehaviour
         if(isSeleting)
         {
             isSeleting = false;
-            marketSystem.SellItem(testItem);
             SeletingIndex = -1;
             SeletingCB = null;
             Destroy(SeletingObject);
             SeleteRotate = 0;
+            marketSystem.SellItem(testItem);
         }
         ActiveGrid.x = -1; 
         ActiveGrid.y = -1;
+        EditingSlotSystem = false;
+        marketSystem.ifUsingMarket = true;
     }
 
 

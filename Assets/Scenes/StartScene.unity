@@ -351,6 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1020488863}
   - component: {fileID: 1020488862}
+  - component: {fileID: 1020488865}
   - component: {fileID: 1020488864}
   m_Layer: 0
   m_Name: Test
@@ -371,15 +372,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88f98141cd5c1a74ba10efea04f83293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ifPlayer1: 0
+  EditingSlotSystem: 0
   m_GirdMap_X: 5
   m_GirdMap_Y: 5
   ActiveGrid:
     x: 0
     y: 0
     Object_index: 0
-  isSeleting: 0
   distance: 1
   StartPos: {fileID: 1020488863}
+  marketSystem: {fileID: 1020488865}
   testObject: {fileID: 472428083442667392, guid: 6dcf5482988f8124ca3cbf6b9d937b1e, type: 3}
   testItem: {fileID: 11400000, guid: 12630fdefe49f25489a38e5bf15bb1c3, type: 2}
   GridList: []
@@ -415,6 +418,24 @@ MonoBehaviour:
   components: []
   type: 1
   Direction: 3
+  breakForce: 0
+--- !u!114 &1020488865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020488861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308d28c60351dfe498ac900d7965f374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Money: 3
+  slotSystem: {fileID: 1020488862}
+  itemList: []
+  ifUsingMarket: 0
+  m_CurrentIndex: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
