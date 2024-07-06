@@ -21,31 +21,30 @@ public class SkillManager : MonoBehaviour
         List<IHoldComponent> removeHoldList = new List<IHoldComponent>();
         foreach (var kvp in triggerMap)
         {
-            kvp.Value.color = Color.Lerp(Color.green, Color.red, kvp.Key.EnergyProgress);
+            kvp.Value.color = Color.Lerp(Color.red, Color.green, kvp.Key.EnergyProgress);
+            Debug.Log(kvp.Value.color);
             if (kvp.Key.EnergyProgress <= 0)
             {
-                
                 removeList.Add(kvp.Key);
             }
         }
         foreach (var kvp in holdMap)
         {
-            kvp.Value.color = Color.Lerp(Color.green, Color.red, kvp.Key.EnergyProgress);
+            kvp.Value.color = Color.Lerp(Color.red, Color.green, kvp.Key.EnergyProgress);
             if (kvp.Key.EnergyProgress <= 0)
             {
-                
                 removeHoldList.Add(kvp.Key);
             }
         }
 
         foreach (var item in removeList)
         {
-            Destroy(triggerMap[item]);
+            Destroy(triggerMap[item].gameObject);
             triggerMap.Remove(item);
         }
         foreach (var item in removeHoldList)
         {
-            Destroy(holdMap[item]);
+            Destroy(holdMap[item].gameObject);
             holdMap.Remove(item);
         }
     }
@@ -64,16 +63,15 @@ public class SkillManager : MonoBehaviour
         text.text = keyName.ToString();
 
 
-        if (typeof(T) == typeof(ITriggerComponent))
+        if (obj is ITriggerComponent trigger)
         {
-            var trigger = obj as ITriggerComponent ?? throw new InvalidOperationException();
+            //var trigger = tri ?? throw new InvalidOperationException();
             triggerMap.Add(trigger,back);
-
+            Debug.Log(triggerMap.Count);
 
         }
-        else if(typeof(T) == typeof(IHoldComponent))
+        else if(obj is IHoldComponent hold)
         {
-            var hold=obj as IHoldComponent ?? throw new InvalidOperationException();
             holdMap.Add(hold,back);
 
         }

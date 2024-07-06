@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdab98fa6923884469e290da33019708, type: 3}
-  m_Name: SlotItem
+  m_Name: Test
   m_EditorClassIdentifier: 
   id: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 5a924f2b2daa93b458364c270973112d, type: 3}
   type: -1
   prefeb: {fileID: 3671837622907248040, guid: 86e1c5a680ed62349afc4843772816fc, type: 3}
   biasList:

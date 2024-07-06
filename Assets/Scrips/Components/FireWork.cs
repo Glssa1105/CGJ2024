@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,18 +12,22 @@ public class FireWork : ComponentBase,ITriggerComponent
 
     private bool isTriggerd;
 
-
-    public override void Start()
+    private void Awake()
     {
-        base.Start();
-        
         currentEnergy = maxEnergy;
-
     }
 
-    protected void Update()
+    // public override void Start()
+    // {
+    //     base.Start();
+    //     
+    //     
+    //
+    // }
+
+    protected override void Update()
     {
-        
+        base.Update();
         
         if (isTriggerd)
         {
@@ -47,6 +52,7 @@ public class FireWork : ComponentBase,ITriggerComponent
         if (Input.GetKeyDown(key))
         {
             OnTrigger();
+            Debug.Log(key);
         }
     }
 

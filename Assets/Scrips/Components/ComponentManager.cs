@@ -27,13 +27,15 @@ public class ComponentManager : SingletonMono<ComponentManager>
     };
 
     private KeyCode[] player2KeyMap = {
-        KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5,
-        KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Plus
+        KeyCode.Keypad1, KeyCode.Keypad2, KeyCode.Keypad3, KeyCode.Keypad4, KeyCode.Keypad5,
+        KeyCode.Keypad6, KeyCode.Keypad7, KeyCode.Keypad8, KeyCode.Keypad9, KeyCode.Plus
     };
 
     private int player1Index;
     private int player2Index;
 
+    public SlotSystem slotSystem1, slotSystem2;
+    
     private void Start()
     {
         //CreateComponent(0,Vector3.zero, transform, true);
@@ -41,15 +43,15 @@ public class ComponentManager : SingletonMono<ComponentManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            GenerateComponentsJoint(GetComponent<SlotSystem>().m_objectList, GetComponent<SlotSystem>().GridMap);
-        }
-
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            onGameStart?.Invoke();
-        }
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     GenerateComponentsJoint(GetComponent<SlotSystem>().m_objectList, GetComponent<SlotSystem>().GridMap);
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.I))
+        // {
+        //     onGameStart?.Invoke();
+        // }
     }
 
 
@@ -78,13 +80,13 @@ public class ComponentManager : SingletonMono<ComponentManager>
         if (isPlayer1)
         {
             skillMgr1.SpawnSkill(item, player1KeyMap[player1Index % player1KeyMap.Length],cmp);
-            
+            cmp.keyCode = player1KeyMap[player1Index % player1KeyMap.Length];
             player1Index++;
         }
         else
         {
             skillMgr2.SpawnSkill(item, player2KeyMap[player2Index%player2KeyMap.Length],cmp);
-            
+            cmp.keyCode = player2KeyMap[player2Index % player2KeyMap.Length];
             player2Index++;
         }
 
@@ -96,10 +98,10 @@ public class ComponentManager : SingletonMono<ComponentManager>
     }
 
 
-    public void StartGame(List<GameObject> objects1, Grid[,] grids1, List<GameObject> objects2, Grid[,] grids2)
+    public void StartGame()
     {
-        GenerateComponentsJoint(objects1, grids1);
-        GenerateComponentsJoint(objects2, grids2);
+        GenerateComponentsJoint(slotSystem1.m_objectList, slotSystem1.GridMap);
+        GenerateComponentsJoint(slotSystem2.m_objectList, slotSystem2.GridMap);
         onGameStart?.Invoke();
     }
 

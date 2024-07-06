@@ -38,7 +38,7 @@ public class ComponentBase : MonoBehaviour
         
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         HandleInput(keyCode);
     }
