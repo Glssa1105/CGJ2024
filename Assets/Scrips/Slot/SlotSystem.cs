@@ -294,14 +294,30 @@ public class SlotSystem : MonoBehaviour
         int dx = 0;
         int dy = 0;
 
-        if (Input.GetKeyDown(KeyCode.A))
-            dx += -1;
-        if(Input.GetKeyDown(KeyCode.S))
-            dy += -1;
-        if(Input.GetKeyDown(KeyCode.D))
-            dx += 1;
-        if (Input.GetKeyDown(KeyCode.W))
-            dy += 1;
+        if (ifPlayer1)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+                dx += -1;
+            if (Input.GetKeyDown(KeyCode.S))
+                dy += -1;
+            if (Input.GetKeyDown(KeyCode.D))
+                dx += 1;
+            if (Input.GetKeyDown(KeyCode.W))
+                dy += 1;
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                dx += -1;
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+                dy += -1;
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+                dx += 1;
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+                dy += 1;
+        }
+
+
 
         var nx = x +dx;
         var ny = y +dy; 
@@ -325,9 +341,9 @@ public class SlotSystem : MonoBehaviour
             for(int j = 0;j<m_GirdMap_Y;j++)
             {
                 if(i == ActiveGrid.x && j == ActiveGrid.y)
-                GridList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.white;
+                GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().color = Color.white;
                 else
-                GridList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.blue;
+                GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().color = Color.blue;
             }
         }
 
@@ -335,7 +351,7 @@ public class SlotSystem : MonoBehaviour
 
     public void SeletctTarget()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if((Input.GetKeyDown(KeyCode.Space) && ifPlayer1) || (Input.GetKeyDown(KeyCode.Keypad0) && !ifPlayer1))
         {
             if(isSeleting == false && ableToPlace[ActiveGrid.y, ActiveGrid.x] == true)
             {
@@ -370,7 +386,7 @@ public class SlotSystem : MonoBehaviour
             {
                 SeletingCB.OnCannotSet();
             }
-            if(Input.GetKeyDown(KeyCode.R))
+            if((Input.GetKeyDown(KeyCode.R)&&ifPlayer1) || (Input.GetKeyDown(KeyCode.KeypadEnter)&&!ifPlayer1))
             {
                 SeleteRotate = (SeleteRotate+1)%4;
                 switch (SeleteRotate)

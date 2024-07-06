@@ -1613,8 +1613,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ifPlayer1: 1
   EditingSlotSystem: 0
-  m_GirdMap_X: 15
-  m_GirdMap_Y: 8
+  m_GirdMap_X: 2
+  m_GirdMap_Y: 4
   ActiveGrid:
     x: 0
     y: 0
