@@ -322,6 +322,12 @@ public class SlotSystem : MonoBehaviour
         var nx = x +dx;
         var ny = y +dy; 
 
+        if(nx < 0)
+        {
+            ChangeToMarket();
+            return;
+        }
+
         if (nx < 0 || nx >= m_GirdMap_X || ny >= m_GirdMap_Y || ny < 0)
         {
             return;
@@ -351,7 +357,7 @@ public class SlotSystem : MonoBehaviour
 
     public void SeletctTarget()
     {
-        if((Input.GetKeyDown(KeyCode.Space) && ifPlayer1) || (Input.GetKeyDown(KeyCode.Keypad0) && !ifPlayer1))
+        if((Input.GetKeyDown(KeyCode.Space) && ifPlayer1) || (Input.GetKeyDown(KeyCode.KeypadEnter) && !ifPlayer1))
         {
             if(isSeleting == false && ableToPlace[ActiveGrid.y, ActiveGrid.x] == true)
             {
@@ -386,7 +392,7 @@ public class SlotSystem : MonoBehaviour
             {
                 SeletingCB.OnCannotSet();
             }
-            if((Input.GetKeyDown(KeyCode.R)&&ifPlayer1) || (Input.GetKeyDown(KeyCode.KeypadEnter)&&!ifPlayer1))
+            if((Input.GetKeyDown(KeyCode.R)&&ifPlayer1) || (Input.GetKeyDown(KeyCode.Keypad0)&&!ifPlayer1))
             {
                 SeleteRotate = (SeleteRotate+1)%4;
                 switch (SeleteRotate)
@@ -427,6 +433,10 @@ public class SlotSystem : MonoBehaviour
         ActiveGrid.y = -1;
         EditingSlotSystem = false;
         marketSystem.ifUsingMarket = true;
+
+        marketSystem.CurrentGrid.x = 0;
+        marketSystem.CurrentGrid.y = 0;
+        marketSystem.m_CurrentIndex = 0;
     }
 
 
