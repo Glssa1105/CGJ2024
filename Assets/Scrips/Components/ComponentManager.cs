@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,9 @@ public class ComponentManager : MonoBehaviour
     public List<ComponentBase> components = new List<ComponentBase>();
     public EDirType type = EDirType.UP;
     public EGridRotate Direction = EGridRotate.RIGHT;
+
+    public Action onGameStart;
+    
     private void Awake()
     {
         
@@ -60,12 +64,25 @@ public class ComponentManager : MonoBehaviour
         var cmp = obj.GetComponent<ComponentBase>();
 
         cmp.detail = item;
+
+        onGameStart += cmp.OnGameStart;
         
         return cmp;
     }
 
+
+    public void StartGame(List<GameObject> objects1,Grid[,] grids1,List<GameObject> objects2,Grid[,] grids2)
+    {
+        GenerateComponentsJoint(objects1,grids1);
+        GenerateComponentsJoint(objects2,grids2);
+        onGameStart?.Invoke();
+    }
+    
+    
     public void GenerateComponentsJoint(List<GameObject> objects,Grid[,] grids)
     {
+        
+        HashSet<KeyValuePair<int,int>> gridSet = new HashSet<KeyValuePair<int,int>>();
         foreach (var grid in grids)
         {
             if (grid.Object_index != -1)
@@ -75,13 +92,66 @@ public class ComponentManager : MonoBehaviour
 
                 var dirMap = GridRotater.RotateDirMap(cmp.detail.type, cmp._Direction);
                 
+                var gridList = GridRotater.AccessMultiplePoints(new Vector2Int(grid.x,grid.y), dirMap, grids);
+            
+                foreach (var nigger in gridList)
+                {
+                    if(gridSet.Contains(new KeyValuePair<int, int>(grid.Object_index,nigger.Value.Object_index))
+                       ||gridSet.Contains(new KeyValuePair<int, int>(nigger.Value.Object_index,grid.Object_index)))
+                    
+                    if(nigger.Value.Object_index==-1|| nigger.Value.Object_index==grid.Object_index)continue;
+                    
+                    var niggerCmp=objects[nigger.Value.Object_index].GetComponent<ComponentBase>();
+                    
+                    var niggerDirMap = GridRotater.RotateDirMap(niggerCmp.detail.type, niggerCmp._Direction);
 
+                    switch (nigger.Key)
+                    {
+                        case EDirType.UP:
+                            if ((niggerDirMap & EDirType.DOWN) != 0)
+                            {
+                                var fixedJoint2D=cmp.AddComponent<FixedJoint2D>();
+                                fixedJoint2D.connectedBody = niggerCmp.GetComponent<Rigidbody2D>();
+                                fixedJoint2D.anchor = new Vector2(0, 0.5f);
+                            }
+                            break;
+                        case EDirType.DOWN:
+                            if ((niggerDirMap & EDirType.UP) != 0)
+                            {
+                                var fixedJoint2D=cmp.AddComponent<FixedJoint2D>();
+                                fixedJoint2D.connectedBody = niggerCmp.GetComponent<Rigidbody2D>();
+                                fixedJoint2D.anchor = new Vector2(0, -0.5f);
+                            }
+                            break;
+                        case EDirType.LEFT:
+                            if ((niggerDirMap & EDirType.RIGHT) != 0)
+                            {
+                                var fixedJoint2D=cmp.AddComponent<FixedJoint2D>();
+                                fixedJoint2D.connectedBody = niggerCmp.GetComponent<Rigidbody2D>();
+                                fixedJoint2D.anchor = new Vector2(-0.5f, 0);
+                            }
+                            break;
+                        case EDirType.RIGHT:
+                            if ((niggerDirMap & EDirType.LEFT) != 0)
+                            {
+                                var fixedJoint2D=cmp.AddComponent<FixedJoint2D>();
+                                fixedJoint2D.connectedBody = niggerCmp.GetComponent<Rigidbody2D>();
+                                fixedJoint2D.anchor = new Vector2(0.5f,0);
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    gridSet.Add(new KeyValuePair<int, int>( grid.Object_index, nigger.Value.Object_index));
+
+                }
+                
             }
-                
-                
-                
+            
             objects[grid.Object_index].AddComponent<FixedJoint2D>();
         }
     }
+
     
 }

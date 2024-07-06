@@ -17,6 +17,25 @@ public class ComponentBase : MonoBehaviour
 
     private SpriteRenderer sr;
 
+    
+
+    public void Start()
+    {
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Static;
+    }
+
+    public void OnGameStart()
+    {
+        GetComponent<Collider2D>().enabled = true;
+        GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Dynamic;
+        
+        Sr.color=Color.white;
+        
+    }
+    
+
+
     public void Rotate(EGridRotate target)
     {
         _direction = target;
@@ -48,4 +67,8 @@ public class ComponentBase : MonoBehaviour
     {
         Sr.color=new Color(0f,255f,0f,1f);
     }
+    
+    
+
+    
 }

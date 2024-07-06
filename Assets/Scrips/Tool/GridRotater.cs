@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class GridRotater
 {
@@ -54,5 +56,48 @@ public class GridRotater
             default:
                 return direction;
         }
+    }
+    
+    
+    
+    private static Vector2Int GetNewPosition(Vector2Int currentPosition, EDirType direction)
+    {
+        switch (direction)
+        {
+            case EDirType.UP:
+                return new Vector2Int(currentPosition.x, currentPosition.y + 1);
+            case EDirType.DOWN:
+                return new Vector2Int(currentPosition.x, currentPosition.y - 1);
+            case EDirType.LEFT:
+                return new Vector2Int(currentPosition.x - 1, currentPosition.y);
+            case EDirType.RIGHT:
+                return new Vector2Int(currentPosition.x + 1, currentPosition.y);
+            default:
+                return currentPosition;
+        }
+    }
+
+    public static Dictionary<EDirType,Grid> AccessMultiplePoints(Vector2Int currentPosition, EDirType dirMap,Grid[,] grids)
+    {
+        Dictionary<EDirType,Grid> gridList = new Dictionary<EDirType,Grid>();
+        foreach (EDirType direction in System.Enum.GetValues(typeof(EDirType)))
+        {
+            if ((dirMap & direction) == direction)
+            {
+                Vector2Int newPosition = GetNewPosition(currentPosition, direction);
+                if (IsValidPosition(newPosition,grids))
+                {
+                    Grid value = grids[newPosition.x, newPosition.y];
+                    gridList.Add(direction,value);
+                }
+            }
+        }
+
+        return gridList;
+    }
+    private static bool IsValidPosition(Vector2Int position,Grid[,] grid)
+    {
+        return position.x >= 0 && position.x < grid.GetLength(0) &&
+               position.y >= 0 && position.y < grid.GetLength(1);
     }
 }
