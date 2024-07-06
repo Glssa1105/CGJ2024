@@ -11,16 +11,15 @@ public class ComponentBase : MonoBehaviour
     private EGridRotate _direction=EGridRotate.UP;
     public EGridRotate _Direction => _direction;
 
-    public SpriteRenderer Sr
-    {
-        get => sr??=GetComponent<SpriteRenderer>();
-    }
+    public SpriteRenderer Sr => sr??=GetComponent<SpriteRenderer>();
 
     private SpriteRenderer sr;
 
+    private Rigidbody2D rb;
     
+    public Rigidbody2D Rb => rb ??= GetComponent<Rigidbody2D>();
 
-    public void Start()
+    public virtual void Start()
     {
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Static;
@@ -68,8 +67,37 @@ public class ComponentBase : MonoBehaviour
     {
         Sr.color=new Color(0f,255f,0f,1f);
     }
-    
-    
+
+    // public Vector3 GetRotateDir(EGridRotate rotate)
+    // {
+    //     switch (rotate)
+    //     {
+    //         case EGridRotate.UP:
+    //             
+    //             return transform.up;
+    //             break;
+    //         case EGridRotate.DOWN:
+    //             return -transform.up;
+    //             break;
+    //         case EGridRotate.LEFT:
+    //             return -transform.right;
+    //             break;
+    //         case EGridRotate.RIGHT:
+    //             return transform.right;
+    //             break;
+    //         default:
+    //             throw new ArgumentOutOfRangeException(nameof(rotate), rotate, null);
+    //     }
+    // }
 
     
+}
+
+public interface ITriggerComponent
+{
+    public void OnTrigger();
+}
+public interface IHoldComponent
+{
+    public void OnHold();
 }

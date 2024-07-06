@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class ComponentManager : SingletonMono<ComponentManager>
 {
@@ -15,6 +16,8 @@ public class ComponentManager : SingletonMono<ComponentManager>
     public EGridRotate Direction = EGridRotate.RIGHT;
 
     public Action onGameStart;
+
+    [FormerlySerializedAs("endForce")] public float breakForce;
     
 
     private void Update()
@@ -22,13 +25,20 @@ public class ComponentManager : SingletonMono<ComponentManager>
         if (Input.GetKeyDown(KeyCode.P))
         {
 
+            
+            //
+
+            GenerateComponentsJoint(GetComponent<SlotSystem>().m_objectList, GetComponent<SlotSystem>().GridMap);
+            // var dirMap = GridRotater.RotateDirMap(type, Direction);
+            //
+            // Debug.Log(dirMap);
+            // Debug.Log(dirMap.ToString());
+            // Debug.Log(Convert.ToString((int)dirMap, 2));
+        }        if (Input.GetKeyDown(KeyCode.I))
+        {
 
             
-            var dirMap = GridRotater.RotateDirMap(type, Direction);
-            
-            Debug.Log(dirMap);
-            Debug.Log(dirMap.ToString());
-            Debug.Log(Convert.ToString((int)dirMap, 2));
+            onGameStart?.Invoke();
         }
     }
 
@@ -82,10 +92,12 @@ public class ComponentManager : SingletonMono<ComponentManager>
                 foreach (var nigger in gridList)
                 {
                     if(gridSet.Contains(new KeyValuePair<int, int>(grid.Object_index,nigger.Value.Object_index))
-                       ||gridSet.Contains(new KeyValuePair<int, int>(nigger.Value.Object_index,grid.Object_index)))
+                       ||gridSet.Contains(new KeyValuePair<int, int>(nigger.Value.Object_index,grid.Object_index)))continue;
                     
                     if(nigger.Value.Object_index==-1|| nigger.Value.Object_index==grid.Object_index)continue;
-                    
+                                
+                    Debug.Log(nigger.Value.Object_index);
+                    Debug.Log(objects.Count);
                     var niggerCmp=objects[nigger.Value.Object_index].GetComponent<ComponentBase>();
                     
                     var niggerDirMap = GridRotater.RotateDirMap(niggerCmp.detail.type, niggerCmp._Direction);
@@ -98,6 +110,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
                                 var fixedJoint2D=cmp.AddComponent<FixedJoint2D>();
                                 fixedJoint2D.connectedBody = niggerCmp.GetComponent<Rigidbody2D>();
                                 fixedJoint2D.anchor = new Vector2(0, 0.5f);
+                                fixedJoint2D.breakForce = breakForce;
                             }
                             break;
                         case EDirType.DOWN:
@@ -106,6 +119,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
                                 var fixedJoint2D=cmp.AddComponent<FixedJoint2D>();
                                 fixedJoint2D.connectedBody = niggerCmp.GetComponent<Rigidbody2D>();
                                 fixedJoint2D.anchor = new Vector2(0, -0.5f);
+                                fixedJoint2D.breakForce = breakForce;
                             }
                             break;
                         case EDirType.LEFT:
@@ -114,6 +128,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
                                 var fixedJoint2D=cmp.AddComponent<FixedJoint2D>();
                                 fixedJoint2D.connectedBody = niggerCmp.GetComponent<Rigidbody2D>();
                                 fixedJoint2D.anchor = new Vector2(-0.5f, 0);
+                                fixedJoint2D.breakForce = breakForce;
                             }
                             break;
                         case EDirType.RIGHT:
@@ -122,6 +137,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
                                 var fixedJoint2D=cmp.AddComponent<FixedJoint2D>();
                                 fixedJoint2D.connectedBody = niggerCmp.GetComponent<Rigidbody2D>();
                                 fixedJoint2D.anchor = new Vector2(0.5f,0);
+                                fixedJoint2D.breakForce = breakForce;
                             }
                             break;
                         default:
@@ -132,9 +148,10 @@ public class ComponentManager : SingletonMono<ComponentManager>
 
                 }
                 
+                //if(objects.Count>grid.Object_index)objects[grid.Object_index].AddComponent<FixedJoint2D>();
             }
+
             
-            objects[grid.Object_index].AddComponent<FixedJoint2D>();
         }
     }
 
