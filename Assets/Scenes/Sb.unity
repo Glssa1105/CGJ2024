@@ -469,6 +469,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemDetails: []
   components: []
+  type: 1
+  Direction: 3
 --- !u!4 &635709640
 Transform:
   m_ObjectHideFlags: 0
@@ -983,8 +985,8 @@ FixedJoint2D:
   m_BreakTorque: Infinity
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.995, y: 0}
+  m_Anchor: {x: 0, y: 0.5}
+  m_ConnectedAnchor: {x: 0.995, y: 0.5}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!1 &1629273627
