@@ -6,11 +6,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ComponentManager : MonoBehaviour
+public class ComponentManager : SingletonMono<ComponentManager>
 {
-    private static ComponentManager instance;
-    public static ComponentManager Instance => instance;
-
     public List<Item> itemDetails=new List<Item>();
     
     public List<ComponentBase> components = new List<ComponentBase>();
@@ -19,18 +16,6 @@ public class ComponentManager : MonoBehaviour
 
     public Action onGameStart;
     
-    private void Awake()
-    {
-        
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
 
     private void Update()
     {
