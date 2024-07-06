@@ -7,8 +7,8 @@ public class Item:ScriptableObject
 {
     public int id;
     public Sprite icon;
-
-
+    public EDirType type;
+    public GameObject prefeb;
     public Grid[] biasList;
 
 }

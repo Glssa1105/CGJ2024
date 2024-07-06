@@ -10,6 +10,14 @@ public enum EGridRotate
 {
     UP, DOWN, LEFT, RIGHT
 }
+[System.Flags]
+public enum EDirType
+{
+    UP=1,
+    DOWN =2,
+    LEFT =4,
+    RIGHT =8
+}
 
 [Serializable]
 public struct Grid {
@@ -28,12 +36,12 @@ public class SlotSystem : MonoBehaviour
     public int m_GirdMap_X;
     public int m_GirdMap_Y;
     public Grid ActiveGrid;
-
-    private List<GameObject> m_objectList;
+   
     private int m_index;
 
-    bool[,] ableToPlace;
-    Grid[,] GridMap;
+    public bool[,] ableToPlace;
+    public Grid[,] GridMap;
+    public List<GameObject> m_objectList;
 
     [SerializeField]
     private float distance;
@@ -50,6 +58,36 @@ public class SlotSystem : MonoBehaviour
         GridMap = new Grid[m_GirdMap_Y, m_GirdMap_X];
         m_objectList = new List<GameObject>();
 
+        foreach(var a in GridMap)
+        {
+
+        }
+
+    }
+
+    private void Start()
+    {
+        CreateGridMap();
+    }
+
+    private void Update()
+    {
+        for (int j = 0; j < m_GirdMap_Y; j++)
+        {
+            for (int i = 0; i < m_GirdMap_X; i++)
+            {
+                if(i == ActiveGrid.x&& j == ActiveGrid.y && )
+                {
+                    m_objectList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.blue;
+                }
+                else if (ableToPlace[j, i] == true)
+                {
+                    m_objectList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.red;
+                }
+
+
+            }
+        }
     }
 
     public bool CheckPlaceable(Grid pos, Grid[] bias,EGridRotate rotate)
@@ -135,24 +173,21 @@ public class SlotSystem : MonoBehaviour
 
         m_index++;
         //m_objectList内添加生成的物体
-        m_objectList.Add(Instantiate(testObject, new Vector3(pos.x, pos.y, 0.0f), Quaternion.identity));
+        m_objectList.Add(Instantiate(testObject, StartPos+new Vector3(pos.x*distance, pos.y*distance, 0.0f), Quaternion.identity));
     }
 
     public void CreateGridMap()
     {
-        for(int i = 0;i<m_GirdMap_X;i++)
+        for(int j = 0;j<m_GirdMap_Y;j++)
         {
-            for(int j = 0;j<m_GirdMap_Y;j++)
+            for(int i = 0;i<m_GirdMap_X;i++)
             {
                 GridList.Add(Instantiate(testObject, StartPos + new Vector3(i * distance, j * distance, 0.0f), Quaternion.identity));
-            
             }
         }
     }
-    private void Update()
-    {
 
-    }
+
 
     public void Change2Market()
     {

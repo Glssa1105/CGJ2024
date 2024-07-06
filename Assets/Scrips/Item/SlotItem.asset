@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   icon: {fileID: 0}
+  biasList:
+  - x: 0
+    y: 0
+    Object_index: 0
