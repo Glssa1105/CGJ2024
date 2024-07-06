@@ -172,10 +172,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer1: 0
-  detail: {fileID: 0}
+  detail: {fileID: 11400000, guid: 3b11308278eceef499452e47efee9ba7, type: 2}
   keyCode: 0
   explosionRadius: 5
-  explosionForce: 700
+  explosionForce: 2000
   explosionLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1

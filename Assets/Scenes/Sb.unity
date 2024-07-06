@@ -1016,9 +1016,11 @@ MonoBehaviour:
   itemDetails:
   - {fileID: 11400000, guid: 12630fdefe49f25489a38e5bf15bb1c3, type: 2}
   - {fileID: 11400000, guid: 22a64bb9723e21e43b2115b20f46cdae, type: 2}
+  - {fileID: 11400000, guid: 3b11308278eceef499452e47efee9ba7, type: 2}
+  - {fileID: 11400000, guid: 8c3691d4c3981c442b882b492679d297, type: 2}
   type: 1
   Direction: 3
-  breakForce: 1000
+  breakForce: 100000
   skillMgr1: {fileID: 1697062419}
   skillMgr2: {fileID: 184506550}
   slotSystem1: {fileID: 1633764319}

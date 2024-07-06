@@ -22,7 +22,7 @@ public class SkillManager : MonoBehaviour
         foreach (var kvp in triggerMap)
         {
             kvp.Value.color = Color.Lerp(Color.red, Color.green, kvp.Key.EnergyProgress);
-            Debug.Log(kvp.Value.color);
+//            Debug.Log(kvp.Value.color);
             if (kvp.Key.EnergyProgress <= 0)
             {
                 removeList.Add(kvp.Key);
@@ -52,29 +52,42 @@ public class SkillManager : MonoBehaviour
 
     public void SpawnSkill<T>(Item item,KeyCode keyName, T obj)
     {
-        var skill = Instantiate(skillPrefab, transform.position, Quaternion.identity,transform);
         
-        var back = skill.GetComponent<Image>();
-        
-        var image =skill.transform.GetChild(0).GetComponent<Image>();
-        image.sprite = item.icon;
-        image.SetNativeSize();
-        var text = skill.transform.GetChild(1).GetComponent<TMP_Text>();
-        text.text = keyName.ToString();
-
-
         if (obj is ITriggerComponent trigger)
         {
-            //var trigger = tri ?? throw new InvalidOperationException();
+        
+            var skill = Instantiate(skillPrefab, transform.position, Quaternion.identity,transform);
+        
+            var back = skill.GetComponent<Image>();
+        
+            var image =skill.transform.GetChild(0).GetComponent<Image>();
+            image.sprite = item.icon;
+            image.SetNativeSize();
+            var text = skill.transform.GetChild(1).GetComponent<TMP_Text>();
+            text.text = keyName.ToString();
             triggerMap.Add(trigger,back);
             Debug.Log(triggerMap.Count);
 
         }
         else if(obj is IHoldComponent hold)
         {
+                    
+            var skill = Instantiate(skillPrefab, transform.position, Quaternion.identity,transform);
+        
+            var back = skill.GetComponent<Image>();
+        
+            var image =skill.transform.GetChild(0).GetComponent<Image>();
+            image.sprite = item.icon;
+            image.SetNativeSize();
+            var text = skill.transform.GetChild(1).GetComponent<TMP_Text>();
+            text.text = keyName.ToString();
             holdMap.Add(hold,back);
 
         }
+
+
+
+        
 
         
 

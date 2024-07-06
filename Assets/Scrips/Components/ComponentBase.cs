@@ -25,14 +25,36 @@ public class ComponentBase : MonoBehaviour
 
     public virtual void Start()
     {
-        GetComponent<Collider2D>().enabled = false;
-        GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Static;
+
+        foreach (var col in GetComponentsInChildren<Collider2D>(true))
+        {
+            col.enabled = false;
+        }
+
+        foreach (var rb in GetComponentsInChildren<Rigidbody2D>(true))
+        {
+            rb.bodyType = RigidbodyType2D.Static;
+        }
+        
+        //
+        // GetComponent<Collider2D>().enabled = false;
+        // GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Static;
     }
 
     public void OnGameStart()
     {
-        GetComponent<Collider2D>().enabled = true;
-        GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Dynamic;
+        // GetComponent<Collider2D>().enabled = true;
+        // GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Dynamic;
+        
+        foreach (var col in GetComponentsInChildren<Collider2D>(true))
+        {
+            col.enabled = true;
+        }
+
+        foreach (var rb in GetComponentsInChildren<Rigidbody2D>(true))
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
         
         Sr.color=Color.white;
         

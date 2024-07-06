@@ -112,8 +112,11 @@ public class ComponentManager : SingletonMono<ComponentManager>
         HashSet<KeyValuePair<int, int>> gridSet = new HashSet<KeyValuePair<int, int>>();
         foreach (var grid in grids)
         {
+            
             if (grid.Object_index != -1)
             {
+                
+                Debug.Log(66666);
                 var cmp = objects[grid.Object_index].GetComponent<ComponentBase>();
 
                 var dirMap = GridRotater.RotateDirMap(cmp.detail.type, cmp._Direction);

@@ -52,7 +52,7 @@ public class FireWork : ComponentBase,ITriggerComponent
         if (Input.GetKeyDown(key))
         {
             OnTrigger();
-            Debug.Log(key);
+//            Debug.Log(key);
         }
     }
 
