@@ -133,7 +133,6 @@ public class SlotSystem : MonoBehaviour
     {
         var pos = ActiveGrid;
         var bias = item.biasList;
-        Debug.Log("Check");
         foreach(var v in bias)
         {
             int cosAngle;
