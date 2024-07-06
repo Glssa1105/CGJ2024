@@ -58,9 +58,9 @@ public class SlotSystem : MonoBehaviour
         GridMap = new Grid[m_GirdMap_Y, m_GirdMap_X];
         m_objectList = new List<GameObject>();
 
-        foreach(var a in GridMap)
+        for(int i = 0;i<m_GirdMap_X;i++)
         {
-
+            
         }
 
     }
@@ -76,7 +76,7 @@ public class SlotSystem : MonoBehaviour
         {
             for (int i = 0; i < m_GirdMap_X; i++)
             {
-                if(i == ActiveGrid.x&& j == ActiveGrid.y && )
+                if(i == ActiveGrid.x&& j == ActiveGrid.y)
                 {
                     m_objectList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.blue;
                 }
