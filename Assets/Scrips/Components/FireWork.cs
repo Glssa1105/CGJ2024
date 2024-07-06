@@ -9,7 +9,8 @@ public class FireWork : ComponentBase,ITriggerComponent
     [SerializeField]private float maxEnergy;
     [SerializeField]private float force;
 
-    private bool isStarted;
+    private bool isTriggerd;
+
 
     public override void Start()
     {
@@ -23,7 +24,7 @@ public class FireWork : ComponentBase,ITriggerComponent
     {
         
         
-        if (isStarted)
+        if (isTriggerd)
         {
             
             currentEnergy -= Time.deltaTime;    
@@ -35,16 +36,26 @@ public class FireWork : ComponentBase,ITriggerComponent
             if (currentEnergy <= 0)
             {
                 Sr.color=Color.grey;
-                isStarted = false;;
+                isTriggerd = false;;
             }
             
         }
     }
 
+    protected override void HandleInput(KeyCode key)
+    {
+        if (Input.GetKeyDown(key))
+        {
+            OnTrigger();
+        }
+    }
+
+
+    public float EnergyProgress => currentEnergy/maxEnergy;
 
     public void OnTrigger()
     {
-        isStarted = true;
+        isTriggerd = true;
     }
 }
 

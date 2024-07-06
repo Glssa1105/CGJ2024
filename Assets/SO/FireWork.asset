@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FireWork
   m_EditorClassIdentifier: 
   id: 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 5a924f2b2daa93b458364c270973112d, type: 3}
   type: -1
   prefeb: {fileID: 3671837622907248040, guid: ed0569d5b56d45b4e9dd0e6cd8a7ad12, type: 3}
   biasList:
@@ -26,3 +26,4 @@ MonoBehaviour:
   - x: 0
     y: 1
     Object_index: 0
+  price: 0

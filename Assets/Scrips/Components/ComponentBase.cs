@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D),typeof(Collider2D))]
 public class ComponentBase : MonoBehaviour
@@ -11,6 +12,8 @@ public class ComponentBase : MonoBehaviour
     private EGridRotate _direction=EGridRotate.UP;
     public EGridRotate _Direction => _direction;
 
+    public KeyCode keyCode;
+    
     public SpriteRenderer Sr => sr??=GetComponent<SpriteRenderer>();
 
     private SpriteRenderer sr;
@@ -18,6 +21,7 @@ public class ComponentBase : MonoBehaviour
     private Rigidbody2D rb;
     
     public Rigidbody2D Rb => rb ??= GetComponent<Rigidbody2D>();
+
 
     public virtual void Start()
     {
@@ -33,8 +37,15 @@ public class ComponentBase : MonoBehaviour
         Sr.color=Color.white;
         
     }
-    
 
+    private void Update()
+    {
+        HandleInput(keyCode);
+    }
+
+    protected virtual void HandleInput(KeyCode key)
+    {
+    }
 
     public void Rotate(EGridRotate target)
     {
@@ -98,9 +109,14 @@ public class ComponentBase : MonoBehaviour
 
 public interface ITriggerComponent
 {
+
+    
+    public float EnergyProgress { get; }
     public void OnTrigger();
 }
 public interface IHoldComponent
 {
+
+    public float EnergyProgress { get; }
     public void OnHold();
 }

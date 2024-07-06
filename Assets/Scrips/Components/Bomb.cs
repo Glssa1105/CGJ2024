@@ -9,6 +9,10 @@ public class Bomb : ComponentBase,ITriggerComponent
     public float explosionRadius = 5f; // 爆炸的范围
     public float explosionForce = 700f; // 爆炸的力量
     public LayerMask explosionLayer; // 要爆炸的层级
+    private float _energyProgress=1;
+
+
+    public float EnergyProgress => _energyProgress;
 
     public void OnTrigger()
     {
@@ -45,8 +49,17 @@ public class Bomb : ComponentBase,ITriggerComponent
             }
         }
 
+        _energyProgress = 0;
         // 输出爆炸信息，方便调试
         Debug.Log($"Explosion at {explosionPosition} with {colliders.Length} objects affected.");
+    }
+
+    protected override void HandleInput(KeyCode key)
+    {
+        if (Input.GetKeyDown(key))
+        {
+            OnTrigger();
+        }
     }
 
     void OnDrawGizmosSelected()
