@@ -333,7 +333,7 @@ public class SlotSystem : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.R))
             {
                 SeleteRotate = (SeleteRotate+1)%4;
-                switch(SeleteRotate)
+                switch (SeleteRotate)
                 {
                     case 0:
                         SeletingCB.Rotate(EGridRotate.UP);
@@ -347,13 +347,13 @@ public class SlotSystem : MonoBehaviour
                     case 3:
                         SeletingCB.Rotate(EGridRotate.LEFT);
                         break;
+                    default:
+                        break;
                 }
             }
-        
+
         }
     }
-
-
 
     public void AddTest()
     {
@@ -364,5 +364,10 @@ public class SlotSystem : MonoBehaviour
                 PlaceGrid(testItem, EGridRotate.UP, true);
             }
         }
+    }
+
+    public void ChangeToMarket()
+    {
+        
     }
 }
