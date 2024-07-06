@@ -118,15 +118,6 @@ public class SlotSystem : MonoBehaviour
             SeletctTarget();
         }
 
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(EditingSlotSystem)
-            {
-                EditingSlotSystem = false;
-                ChangeToMarket();
-            }
-        }
-
         DrawActiveGrid();
     }
 
