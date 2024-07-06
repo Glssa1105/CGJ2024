@@ -348,6 +348,7 @@ public class SlotSystem : MonoBehaviour
             }
             else if(isSeleting == true && CheckPlaceable(SeletingCB.detail,SeletingCB._Direction))
             {
+
                 isSeleting = false;
                 PlaceGrid(SeletingCB.detail, SeletingCB._Direction, false);
                 SeletingIndex = -1;

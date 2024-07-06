@@ -6,10 +6,13 @@ using UnityEngine.Events;
 
 public class MarketSystem : MonoBehaviour
 {
+    public int Monny;
     public void SellItem(Item item)
     {
 
     }
+
+    
 
 
 }
