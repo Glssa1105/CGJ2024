@@ -103,9 +103,10 @@ public class ComponentManager : SingletonMono<ComponentManager>
         GenerateComponentsJoint(slotSystem1.m_objectList, slotSystem1.GridMap);
         GenerateComponentsJoint(slotSystem2.m_objectList, slotSystem2.GridMap);
         onGameStart?.Invoke();
+        
     }
 
-
+    
     public void GenerateComponentsJoint(List<GameObject> objects, Grid[,] grids)
     {
         HashSet<KeyValuePair<int, int>> gridSet = new HashSet<KeyValuePair<int, int>>();
@@ -172,6 +173,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
                                 fixedJoint2D.connectedBody = niggerCmp.GetComponent<Rigidbody2D>();
                                 fixedJoint2D.anchor = new Vector2(0.5f, 0);
                                 fixedJoint2D.breakForce = breakForce;
+                                
                             }
 
                             break;

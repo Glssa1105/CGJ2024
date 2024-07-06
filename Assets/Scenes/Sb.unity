@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308d28c60351dfe498ac900d7965f374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Money: 0
+  Money: 999
   slotSystem: {fileID: 248200203}
   itemList: []
   ifUsingMarket: 0
@@ -400,8 +400,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ifPlayer1: 0
   EditingSlotSystem: 0
-  m_GirdMap_X: 10
-  m_GirdMap_Y: 10
+  m_GirdMap_X: 15
+  m_GirdMap_Y: 8
   ActiveGrid:
     x: 0
     y: 0
@@ -1613,8 +1613,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ifPlayer1: 1
   EditingSlotSystem: 0
-  m_GirdMap_X: 10
-  m_GirdMap_Y: 10
+  m_GirdMap_X: 15
+  m_GirdMap_Y: 8
   ActiveGrid:
     x: 0
     y: 0
@@ -1637,7 +1637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308d28c60351dfe498ac900d7965f374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Money: 0
+  Money: 999
   slotSystem: {fileID: 1633764319}
   itemList: []
   ifUsingMarket: 0

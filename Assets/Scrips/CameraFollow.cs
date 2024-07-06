@@ -15,6 +15,8 @@ public class CameraFollow : MonoBehaviour
         // 使用插值计算相机的新位置
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
 
+        smoothedPosition.x=Mathf.Max(0, smoothedPosition.x);
+        
         smoothedPosition.z = -100;
         // 设置相机位置
         transform.position = smoothedPosition;
