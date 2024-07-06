@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MarketSystem : MonoBehaviour
 {
-    private List<Item> itemList = new List<Item>();
-    
-   
+    public void SellItem(Item item)
+    {
+
+    }
+
 
 }

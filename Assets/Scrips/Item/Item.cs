@@ -10,5 +10,5 @@ public class Item:ScriptableObject
     public EDirType type;
     public GameObject prefeb;
     public Grid[] biasList;
-
+    public int price;
 }

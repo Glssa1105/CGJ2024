@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 using static UnityEditor.Progress;
 
 public enum EGridRotate
@@ -44,13 +45,15 @@ public class SlotSystem : MonoBehaviour
     public int m_GirdMap_X;
     public int m_GirdMap_Y;
     public Grid ActiveGrid;
-    
+
     //选中与控制
+    [NonSerialized]
     public bool isSeleting;
+    [NonSerialized]
     public GameObject SeletingObject;
-    public ComponentBase SeletingCB;
-    public int SeletingIndex;
-    public int SeleteRotate;
+    [NonSerialized] public ComponentBase SeletingCB;
+    [NonSerialized] public int SeletingIndex;
+    [NonSerialized] public int SeleteRotate;
 
 
     private int m_index;
@@ -60,7 +63,7 @@ public class SlotSystem : MonoBehaviour
     [NonSerialized]
     public Grid[,] GridMap;
 
-    public List<GameObject> m_objectList;
+    [NonSerialized] public List<GameObject> m_objectList;
 
     [SerializeField]
     private float distance;
@@ -68,10 +71,13 @@ public class SlotSystem : MonoBehaviour
 
     //绘制GridMap
     public Transform StartPos;
+    public MarketSystem marketSystem;
+
     public GameObject testObject;
     public Item testItem;
     public List<GameObject> GridList;
 
+    private bool EditingSlotSystem;
 
     private void Awake()
     {
@@ -94,13 +100,33 @@ public class SlotSystem : MonoBehaviour
     private void Start()
     {
         CreateGridMap();
+
+
+        EnterSlotSystem();
     }
     private void Update()
     {
-        MoveActiveGrid();
-        AddTest();
+        if(EditingSlotSystem)
+        {
+            MoveActiveGrid();
+            SeletctTarget();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(EditingSlotSystem)
+            {
+                EditingSlotSystem = false;
+                ChangeToMarket();
+            }
+            else
+            {
+                EnterSlotSystem();
+                EnterAndSelectItem(testItem, EGridRotate.UP);
+            }
+        }
+
         DrawActiveGrid();
-        SeletctTarget();
     }
 
     public bool CheckPlaceable(Item item,EGridRotate rotate)
@@ -196,6 +222,19 @@ public class SlotSystem : MonoBehaviour
             obj.Rotate(rotate);
             m_objectList.Add(obj.gameObject);
         }        
+    }
+
+    public void EnterAndSelectItem(Item item, EGridRotate rotate)
+    {
+        isSeleting = true;
+        var obj = ComponentManager.Instance.CreateComponent(item.id, transform.position + new Vector3(ActiveGrid.x * distance, ActiveGrid.y * distance, 0.0f), transform.root);
+        obj.Rotate(rotate);
+        m_objectList.Add(obj.gameObject);
+        SeletingIndex = m_index;
+        SeletingObject = m_objectList[m_index];
+        m_index++;
+        SeletingCB = SeletingObject.GetComponent<ComponentBase>();
+
     }
 
     public void RemoveGrid(Item item, EGridRotate rotate)
@@ -355,19 +394,29 @@ public class SlotSystem : MonoBehaviour
         }
     }
 
-    public void AddTest()
-    {
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            if (!ableToPlace[ActiveGrid.y, ActiveGrid.x] && CheckPlaceable(testItem, EGridRotate.UP))
-            {
-                PlaceGrid(testItem, EGridRotate.UP, true);
-            }
-        }
-    }
 
     public void ChangeToMarket()
     {
-        
+        if(isSeleting)
+        {
+            isSeleting = false;
+            marketSystem.SellItem(testItem);
+            SeletingIndex = -1;
+            SeletingCB = null;
+            Destroy(SeletingObject);
+            SeleteRotate = 0;
+        }
+        ActiveGrid.x = -1; 
+        ActiveGrid.y = -1;
+    }
+
+
+
+    public void EnterSlotSystem()
+    {
+        ActiveGrid.x = 0;
+        ActiveGrid.y = 0;
+        EditingSlotSystem = true;
+        //test
     }
 }
