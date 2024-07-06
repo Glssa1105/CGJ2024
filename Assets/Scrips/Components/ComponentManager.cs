@@ -50,7 +50,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
     /// <param name="position">生成位置</param>
     /// <param name="parent">父物体</param>
     /// <returns></returns>
-    public ComponentBase CreateComponent(int id,Vector3 position,Transform parent)
+    public ComponentBase CreateComponent(int id,Vector3 position,Transform parent,bool isPlayer1)
     {
         var item=itemDetails.Find((i) => i.id == id);
 
@@ -61,6 +61,8 @@ public class ComponentManager : SingletonMono<ComponentManager>
         cmp.detail = item;
 
         onGameStart += cmp.OnGameStart;
+        
+        cmp.isPlayer1 = isPlayer1;
         
         return cmp;
     }

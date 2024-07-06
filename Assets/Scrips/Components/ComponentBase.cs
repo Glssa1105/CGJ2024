@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D),typeof(Collider2D))]
 public class ComponentBase : MonoBehaviour
 {
-
+    public bool isPlayer1;
     public Item detail;
     private EGridRotate _direction=EGridRotate.UP;
     public EGridRotate _Direction => _direction;
