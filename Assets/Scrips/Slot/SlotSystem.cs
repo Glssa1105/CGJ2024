@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public enum EGridRotate
 {
@@ -43,7 +44,14 @@ public class SlotSystem : MonoBehaviour
     public int m_GirdMap_X;
     public int m_GirdMap_Y;
     public Grid ActiveGrid;
+    
+    //选中与控制
     public bool isSeleting;
+    public GameObject SeletingObject;
+    public ComponentBase SeletingCB;
+    public int SeletingIndex;
+    public int SeleteRotate;
+
 
     private int m_index;
 
@@ -51,7 +59,7 @@ public class SlotSystem : MonoBehaviour
     public bool[,] ableToPlace;
     [NonSerialized]
     public Grid[,] GridMap;
-    [NonSerialized]
+
     public List<GameObject> m_objectList;
 
     [SerializeField]
@@ -61,7 +69,9 @@ public class SlotSystem : MonoBehaviour
     //绘制GridMap
     public Transform StartPos;
     public GameObject testObject;
+    public Item testItem;
     public List<GameObject> GridList;
+
 
     private void Awake()
     {
@@ -85,34 +95,19 @@ public class SlotSystem : MonoBehaviour
     {
         CreateGridMap();
     }
-
     private void Update()
     {
-        for (int j = 0; j < m_GirdMap_Y; j++)
-        {
-            for (int i = 0; i < m_GirdMap_X; i++)
-            {
-                if(i == ActiveGrid.x&& j == ActiveGrid.y)
-                {
-                    
-                    //m_objectList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.blue;
-                }
-                else if (ableToPlace[j, i] == true)
-                {
-                    //m_objectList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.red;
-                }
-
-
-            }
-        }
-
         MoveActiveGrid();
+        AddTest();
+        DrawActiveGrid();
+        SeletctTarget();
     }
 
     public bool CheckPlaceable(Item item,EGridRotate rotate)
     {
         var pos = ActiveGrid;
         var bias = item.biasList;
+        Debug.Log("Check");
         foreach(var v in bias)
         {
             int cosAngle;
@@ -156,7 +151,7 @@ public class SlotSystem : MonoBehaviour
         return true;
     }
 
-    public void PlaceGrid(Item item,EGridRotate rotate)
+    public void PlaceGrid(Item item,EGridRotate rotate,bool ifCreate = false)
     {
         var bias = item.biasList;
         var pos = ActiveGrid;
@@ -191,12 +186,55 @@ public class SlotSystem : MonoBehaviour
             int nx = pos.x + v.x * cosAngle - v.y * sinAngle;
             int ny = pos.y + v.x * sinAngle + v.y * cosAngle;
             ableToPlace[ny, nx] = true;
-            GridMap[ny, nx] = new Grid(pos.x, pos.y, m_index);
+            GridMap[ny, nx] = new Grid(pos.x, pos.y, ifCreate ? m_index : SeletingIndex);
         }
-
-        m_index++;
         //m_objectList内添加生成的物体
-        m_objectList.Add(Instantiate(testObject, transform.position+new Vector3(pos.x*distance, pos.y*distance, 0.0f), Quaternion.identity));
+        if(ifCreate)
+        {
+            m_index++;
+            var obj = ComponentManager.Instance.CreateComponent(item.id, transform.position + new Vector3(pos.x * distance, pos.y * distance, 0.0f), transform.root);
+            obj.Rotate(rotate);
+            m_objectList.Add(obj.gameObject);
+        }        
+    }
+
+    public void RemoveGrid(Item item, EGridRotate rotate)
+    {
+        var bias = item.biasList;
+        var pos = ActiveGrid;
+        foreach (var v in bias)
+        {
+            int cosAngle;
+            int sinAngle;
+
+            switch (rotate)
+            {
+                case EGridRotate.UP:
+                    cosAngle = 1;
+                    sinAngle = 0;
+                    break;
+                case EGridRotate.DOWN:
+                    cosAngle = -1;
+                    sinAngle = 0;
+                    break;
+                case EGridRotate.LEFT:
+                    cosAngle = 0;
+                    sinAngle = -1;
+                    break;
+                case EGridRotate.RIGHT:
+                    cosAngle = 0;
+                    sinAngle = 1;
+                    break;
+
+                default:
+                    cosAngle = -1; sinAngle = -1;
+                    break;
+            }
+            int nx = pos.x + v.x * cosAngle - v.y * sinAngle;
+            int ny = pos.y + v.x * sinAngle + v.y * cosAngle;
+            ableToPlace[ny, nx] = false;
+            GridMap[ny, nx] = new Grid(nx, ny, -1);
+        }
     }
 
     public void CreateGridMap()
@@ -233,25 +271,98 @@ public class SlotSystem : MonoBehaviour
         {
             return;
         }
-        if (ableToPlace[ny, nx] == true)
-        {
-            return;
-        }
         
 
         if (x == nx && y == ny)
             return;
-        GridList[y*m_GirdMap_Y + x].GetComponent<SpriteRenderer>().color = Color.white;
-        GridList[ny * m_GirdMap_Y + nx].GetComponent<SpriteRenderer>().color = Color.blue;
         ActiveGrid.x = nx;
         ActiveGrid.y = ny;
     }
 
-    public void SeletctTarget()
+    public void DrawActiveGrid()
     {
-        
+        for(int i = 0;i<m_GirdMap_X;i++)
+        {
+            for(int j = 0;j<m_GirdMap_Y;j++)
+            {
+                if(i == ActiveGrid.x && j == ActiveGrid.y)
+                GridList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.white;
+                else
+                GridList[j * m_GirdMap_Y + i].GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+        }
+
     }
 
-    
-    
+    public void SeletctTarget()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if(isSeleting == false && ableToPlace[ActiveGrid.y, ActiveGrid.x] == true)
+            {
+                isSeleting = true;
+                ActiveGrid = GridMap[ActiveGrid.y, ActiveGrid.x];
+                SeletingObject = m_objectList[ActiveGrid.Object_index];
+                SeletingCB = SeletingObject.GetComponent<ComponentBase>();
+                SeletingIndex = ActiveGrid.Object_index; 
+                RemoveGrid(SeletingCB.detail,SeletingCB._Direction);
+                
+            }
+            else if(isSeleting == true && CheckPlaceable(SeletingCB.detail,SeletingCB._Direction))
+            {
+                isSeleting = false;
+                PlaceGrid(SeletingCB.detail, SeletingCB._Direction, false);
+                SeletingIndex = -1;
+                SeletingCB = null;
+                SeletingObject = null;
+                SeleteRotate = 0;
+            }
+        }
+
+        if (isSeleting == true)
+        {
+            SeletingObject.transform.position = GridList[m_GirdMap_X * ActiveGrid.y + ActiveGrid.x].transform.position;
+            if(CheckPlaceable(SeletingCB.detail,SeletingCB._Direction))
+            {
+                SeletingCB.OnCanSet();
+            }
+            else
+            {
+                SeletingCB.OnCannotSet();
+            }
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                SeleteRotate = (SeleteRotate+1)%4;
+                switch(SeleteRotate)
+                {
+                    case 0:
+                        SeletingCB.Rotate(EGridRotate.UP);
+                        break;
+                    case 1:
+                        SeletingCB.Rotate(EGridRotate.RIGHT);
+                        break;
+                    case 2:
+                        SeletingCB.Rotate(EGridRotate.DOWN);
+                        break;
+                    case 3:
+                        SeletingCB.Rotate(EGridRotate.LEFT);
+                        break;
+                }
+            }
+        
+        }
+    }
+
+
+
+    public void AddTest()
+    {
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            if (!ableToPlace[ActiveGrid.y, ActiveGrid.x] && CheckPlaceable(testItem, EGridRotate.UP))
+            {
+                PlaceGrid(testItem, EGridRotate.UP, true);
+            }
+        }
+    }
 }

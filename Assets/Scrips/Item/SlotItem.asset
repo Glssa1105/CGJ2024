@@ -14,7 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   icon: {fileID: 0}
+  type: -1
+  prefeb: {fileID: 3671837622907248040, guid: 86e1c5a680ed62349afc4843772816fc, type: 3}
   biasList:
   - x: 0
     y: 0
+    Object_index: 0
+  - x: 0
+    y: -1
+    Object_index: 0
+  - x: 0
+    y: 1
     Object_index: 0
