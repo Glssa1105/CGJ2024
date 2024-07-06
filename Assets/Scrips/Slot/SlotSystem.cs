@@ -42,6 +42,9 @@ public class ItemState
 
 public class SlotSystem : MonoBehaviour
 {
+    [Tooltip("是否为玩家1，否则玩家2")]
+    public bool ifPlayer1;
+
     public int m_GirdMap_X;
     public int m_GirdMap_Y;
     public Grid ActiveGrid;
@@ -218,7 +221,7 @@ public class SlotSystem : MonoBehaviour
         if(ifCreate)
         {
             m_index++;
-            var obj = ComponentManager.Instance.CreateComponent(item.id, transform.position + new Vector3(pos.x * distance, pos.y * distance, 0.0f), transform.root);
+            var obj = ComponentManager.Instance.CreateComponent(item.id, transform.position + new Vector3(pos.x * distance, pos.y * distance, 0.0f), transform.root,ifPlayer1);
             obj.Rotate(rotate);
             m_objectList.Add(obj.gameObject);
         }        
@@ -227,7 +230,7 @@ public class SlotSystem : MonoBehaviour
     public void EnterAndSelectItem(Item item, EGridRotate rotate)
     {
         isSeleting = true;
-        var obj = ComponentManager.Instance.CreateComponent(item.id, transform.position + new Vector3(ActiveGrid.x * distance, ActiveGrid.y * distance, 0.0f), transform.root);
+        var obj = ComponentManager.Instance.CreateComponent(item.id, transform.position + new Vector3(ActiveGrid.x * distance, ActiveGrid.y * distance, 0.0f), transform.root, ifPlayer1);
         obj.Rotate(rotate);
         m_objectList.Add(obj.gameObject);
         SeletingIndex = m_index;
