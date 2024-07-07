@@ -342,9 +342,49 @@ public class SlotSystem : MonoBehaviour
             for(int j = 0;j<m_GirdMap_Y;j++)
             {
                 if(i == ActiveGrid.x && j == ActiveGrid.y)
-                GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().sprite = activeSprite;
+                {
+                 
+                    GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().sprite = activeSprite;
+                    if(isSeleting)
+                    {
+                        var obj = GridList[j * m_GirdMap_X + i].transform.GetChild(0).gameObject;
+                        obj.SetActive(true);
+                        var activeDir = GridRotater.RotateDirMap(SeletingCB.detail.type, SeletingCB._Direction);
+                        if ((EDirType.RIGHT & activeDir) != 0)
+                        {
+                            obj.transform.Find("RightCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+                        }
+                        else obj.transform.Find("RightCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+
+                        if ((EDirType.LEFT & activeDir) != 0)
+                        {
+                            obj.transform.Find("LeftCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+                        }
+                        else obj.transform.Find("LeftCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+
+                        if ((EDirType.UP & activeDir) != 0)
+                        {
+                            obj.transform.Find("UpCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+                        }
+                        else obj.transform.Find("UpCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+
+                        if ((EDirType.DOWN & activeDir) != 0)
+                        {
+                            obj.transform.Find("DownCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+                        }
+                        else obj.transform.Find("DownCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                    }
+                    else
+                    {
+                        var obj = GridList[j * m_GirdMap_X + i].transform.GetChild(0).gameObject;
+                        obj.SetActive(false);
+                    }
+                }
                 else
-                GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().sprite = normalSprite;
+                {
+                    GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().sprite = normalSprite;
+                    GridList[j * m_GirdMap_X + i].transform.GetChild(0).gameObject.SetActive(false);
+                }
             }
         }
 
@@ -419,10 +459,11 @@ public class SlotSystem : MonoBehaviour
         {
             isSeleting = false;
             SeletingIndex = -1;
+            marketSystem.SellItem(SeletingCB.detail);
             SeletingCB = null;
             Destroy(SeletingObject);
             SeleteRotate = 0;
-            marketSystem.SellItem(testItem);
+            
         }
         ActiveGrid.x = -1; 
         ActiveGrid.y = -1;
