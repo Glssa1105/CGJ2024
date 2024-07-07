@@ -128,6 +128,17 @@ public class MarketSystem : MonoBehaviour
 
         var nx = dx + CurrentGrid.x;
         var ny = dy + CurrentGrid.y;
+        //if(nx >= m_maxX)
+        //{
+        //    ifUsingMarket = false;
+        //    slotSystem.EnterSlotSystem();
+        //    CurrentGrid.x = -1;
+        //    CurrentGrid.y = -1;
+        //    m_CurrentIndex = -1;
+        //    FreshUI();
+        //    return;
+        //}
+
         if(nx < 0 || ny< 0||nx>=m_maxX||ny>=m_maxY || ny*m_maxX +nx >= itemList.Count)
         {
             return;
@@ -177,5 +188,6 @@ public class MarketSystem : MonoBehaviour
             FreshUI();
         }
     }
+
 
 }
