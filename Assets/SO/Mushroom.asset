@@ -21,4 +21,5 @@ MonoBehaviour:
   - x: 0
     y: 0
     Object_index: 0
-  price: 1
+  price: 3
+  description: "\u5F39\u529B\u5F88\u5F3A"

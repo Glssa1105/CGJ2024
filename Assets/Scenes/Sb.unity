@@ -1199,6 +1199,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 77998026add253f468088716ca4a5f44, type: 2}
   - {fileID: 11400000, guid: 60205a9bb3898ec4e8664faa57d6e736, type: 2}
   - {fileID: 11400000, guid: 0c94e1bdc8477e24eb2d9fc53ad99144, type: 2}
+  - {fileID: 11400000, guid: 8bf4672af5ba0824ba202a1e262a7cef, type: 2}
+  - {fileID: 11400000, guid: 01958462629dace4eb1ea222be0f7510, type: 2}
+  - {fileID: 11400000, guid: 31ace8252f48f0b4ea39bc4ea26df9e7, type: 2}
   type: 1
   Direction: 3
   breakForce: 2000
@@ -1632,7 +1635,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 337.41, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &957335332
@@ -4043,7 +4046,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 337.41, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2037223382

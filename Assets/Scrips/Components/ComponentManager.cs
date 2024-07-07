@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class ComponentManager : SingletonMono<ComponentManager>
 {
@@ -45,6 +46,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
     private float lastDistance1, lastDistance2;
 
     public SlotSystem slotSystem1, slotSystem2;
+    public MarketSystem MarketSystem1, MarketSystem2;
 
     private float timer;
     private float timer1;
@@ -67,6 +69,11 @@ public class ComponentManager : SingletonMono<ComponentManager>
         playe1xTemp = player1.transform.position.x;
         playe2xTemp = player2.transform.position.x;
         baseFontSize = distanceText1.fontSize;
+
+        int money = Random.Range(2, 16);
+        MarketSystem1.Money = money * 5;
+        MarketSystem2.Money = money * 5;
+
     }
 
     private void Update()
