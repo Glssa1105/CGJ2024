@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +10,9 @@ public class MarketSystem : MonoBehaviour
     public bool isPlayer1;
 
     public int Money;
+    
+    public TMP_Text MoneyText;
+    
     public SlotSystem slotSystem;
     public List<Item> itemList;
     public bool ifUsingMarket;
@@ -26,6 +30,12 @@ public class MarketSystem : MonoBehaviour
     public Vector2Int CurrentGrid;
     public List<GameObject> m_objectList;
 
+    public Sprite normalSprite;
+    
+    public Sprite activeSprite;
+
+    public TMP_Text description;
+    
     private void Start()
     {
         itemList = ComponentManager.Instance.itemDetails;
@@ -54,8 +64,8 @@ public class MarketSystem : MonoBehaviour
         for(int i = 0;i< itemList.Count;i++)
         {
             var trans = StartPos;
-            trans.position = new Vector3(StartPos.position.x + Distance*(i%m_maxX),StartPos.position.y + Distance*(i/m_maxX),trans.position.z);
-            m_objectList.Add(Instantiate(testObject, trans.position, Quaternion.identity));
+            var position = new Vector3(StartPos.position.x + Distance*(i%m_maxX),StartPos.position.y + Distance*(i/m_maxX),trans.position.z);
+            m_objectList.Add(Instantiate(testObject, position, Quaternion.identity));
         }
         FreshUI();
 
@@ -69,6 +79,8 @@ public class MarketSystem : MonoBehaviour
             FreshUI();
             SelectUI();
         }
+
+        MoneyText.text = Money + "гд";
     }
 
     public void MoveActive()
@@ -79,11 +91,11 @@ public class MarketSystem : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
-                dy -= 1;
+                dy += 1;
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                dy += 1;
+                dy -= 1;
             }
             if(Input.GetKeyDown(KeyCode.D))
             {
@@ -98,11 +110,11 @@ public class MarketSystem : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.UpArrow))
             {
-                dy -= 1;
+                dy += 1;
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                dy += 1;
+                dy -= 1;
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -132,14 +144,18 @@ public class MarketSystem : MonoBehaviour
         for(int i =0; i < itemList.Count; i++)
         {
             m_objectList[i].GetComponent<SpriteRenderer>().sprite = itemList[i].icon;
+            m_objectList[i].transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text =
+                itemList[i].name + ":" + itemList[i].price + "$";
             if(i == m_CurrentIndex)
             {
-                m_objectList[i].GetComponent<SpriteRenderer>().color = Color.red;
+                m_objectList[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = activeSprite;
             }
             else
             {
-                m_objectList[i].GetComponent<SpriteRenderer>().color = Color.white;
+                m_objectList[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = normalSprite;
             }
+
+            description.text = itemList[i].description;
         }
     }
 
@@ -149,7 +165,7 @@ public class MarketSystem : MonoBehaviour
         {
             if (TryToBuy(itemList[m_CurrentIndex]))
             {
-                m_CurrentIndex = 0;
+                //m_CurrentIndex = 0;
                 ifUsingMarket = false;
                 slotSystem.EnterSlotSystem();
                 slotSystem.EnterAndSelectItem(itemList[m_CurrentIndex], EGridRotate.UP);

@@ -10,6 +10,7 @@ public class Bomb : ComponentBase,ITriggerComponent
     public float explosionForce = 700f; // 爆炸的力量
     public LayerMask explosionLayer; // 要爆炸的层级
     private float _energyProgress=1;
+    private static readonly int IsWorking = Animator.StringToHash("Working");
 
 
     public float EnergyProgress => _energyProgress;
@@ -21,6 +22,8 @@ public class Bomb : ComponentBase,ITriggerComponent
             Explode();  
             
             bombed = true;
+            
+            Ani.SetBool(IsWorking,true);
         }
     }
     

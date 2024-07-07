@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Bomb
   m_EditorClassIdentifier: 
   id: 1
-  icon: {fileID: 21300000, guid: fda0c2bf937c4e647ac4c47bec1dceb4, type: 3}
+  name: "\u8FA3\u6912"
+  icon: {fileID: 21300000, guid: dfb1746582d745240ad3d8119ae105ab, type: 3}
   type: -1
   prefeb: {fileID: 3671837622907248040, guid: 693077d59c012554091a5ba5d094a6e5, type: 3}
   biasList:

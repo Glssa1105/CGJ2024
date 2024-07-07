@@ -13,7 +13,11 @@ public class ComponentBase : MonoBehaviour
     public EGridRotate _Direction => _direction;
 
     public KeyCode keyCode;
-    
+
+    public bool started=false;
+
+    private Animator ani;
+    public Animator Ani => ani ??= GetComponent<Animator>();
     
     public SpriteRenderer Sr => sr??=GetComponent<SpriteRenderer>();
 
@@ -38,7 +42,8 @@ public class ComponentBase : MonoBehaviour
         {
             rb.bodyType = RigidbodyType2D.Static;
         }
-        
+
+        started = false;
         //
         // GetComponent<Collider2D>().enabled = false;
         // GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Static;
@@ -50,6 +55,8 @@ public class ComponentBase : MonoBehaviour
         // GetComponent<Rigidbody2D>().bodyType=RigidbodyType2D.Dynamic;
         
         if(destroyed)return;
+
+        started = true;
         
         foreach (var col in GetComponentsInChildren<Collider2D>(true))
         {
@@ -72,7 +79,10 @@ public class ComponentBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        HandleInput(keyCode);
+        if (started)
+        {
+            HandleInput(keyCode);
+        }
     }
 
     protected virtual void HandleInput(KeyCode key)

@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class ComponentManager : SingletonMono<ComponentManager>
@@ -34,11 +36,37 @@ public class ComponentManager : SingletonMono<ComponentManager>
     private int player1Index;
     private int player2Index;
 
+    public GameObject player1, player2;
+
+    public TMP_Text distanceText1, distanceText2;
+
+    private float playe1xTemp, playe2xTemp;
+    private float distance1, distance2;
+    private float lastDistance1, lastDistance2;
+
     public SlotSystem slotSystem1, slotSystem2;
+
+    private float timer;
+    private float timer1;
+    private float timer2;
+    private float baseFontSize = 20;
+    
+    private List<ComponentBase> components = new List<ComponentBase>();
+
+    public GameObject EndPanel;
+
+    public GameObject num;
+    
+    private bool started;
+    
+    
     
     private void Start()
     {
         //CreateComponent(0,Vector3.zero, transform, true);
+        playe1xTemp = player1.transform.position.x;
+        playe2xTemp = player2.transform.position.x;
+        baseFontSize = distanceText1.fontSize;
     }
 
     private void Update()
@@ -52,9 +80,91 @@ public class ComponentManager : SingletonMono<ComponentManager>
         // {
         //     onGameStart?.Invoke();
         // }
+        
+        if(!started)return;
+
+        distance1 = player1.transform.position.x-playe1xTemp;
+        distance2 = player2.transform.position.x-playe2xTemp;
+        distanceText1.text="距离："+distance1.ToString("f2")+"m";
+        distanceText2.text="距离："+distance2.ToString("f2")+"m";
+        timer += Time.deltaTime;
+        
+        
+        distanceText1.fontSize = baseFontSize + (int) (distance1 /10)+Mathf.Sin(timer)*5;
+        
+        distanceText2.fontSize = baseFontSize + (int) (distance2 /10)+Mathf.Sin(timer)*5;
+
+        if(lastDistance1>= distance1)
+        {
+            timer1 += Time.deltaTime;
+        }
+        else
+        {
+            timer1 = 0;
+        }
+        if(lastDistance2>= distance2)
+        {
+            timer2 += Time.deltaTime;
+        }
+        else
+        {
+            timer2 = 0;
+        }
+
+        if (timer1 >= 5&&timer2>=5&&distance1!=0&&distance2!=0)
+        {
+            EndGame();
+        }
+        
+        
+        lastDistance1 = distance1;
+        lastDistance2 = distance2;
+        
+        
+
+
     }
 
+    public void PressStartBtn()
+    {
+        StartCoroutine(IStartGame());
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
+    IEnumerator IStartGame()
+    {
+
+        
+        
+        yield return new WaitForSeconds(3f);
+        
+        num.SetActive(false);
+        
+        StartGame();
+    }
+    private void EndGame()
+    {
+        EndPanel.SetActive(true);
+
+        started = false;
+
+        Score.MaxScore = distance1;
+        Score.MaxScore = distance2;
+        
+        if (distance1 > distance2)
+        {
+            EndPanel.GetComponentInChildren<TMP_Text>().text = $"Player1 Win!\n 历史最高成绩：{Score.MaxScore}";
+        }
+        else
+        {
+            EndPanel.GetComponentInChildren<TMP_Text>().text =$"Player2 Win!\n 历史最高成绩：{Score.MaxScore}";
+        }
+        
+    }
+    
     /// <summary>
     /// 创造配件
     /// </summary>
@@ -66,6 +176,9 @@ public class ComponentManager : SingletonMono<ComponentManager>
     {
         var item = itemDetails.Find((i) => i.id == id);
 
+        Debug.Log(item);
+        Debug.Log(id);
+        
         var obj = Instantiate(item.prefeb, position, Quaternion.identity, parent);
 
         var cmp = obj.GetComponent<ComponentBase>();
@@ -77,33 +190,63 @@ public class ComponentManager : SingletonMono<ComponentManager>
         cmp.isPlayer1 = isPlayer1;
 
 
-        if (isPlayer1)
-        {
-            skillMgr1.SpawnSkill(item, player1KeyMap[player1Index % player1KeyMap.Length],cmp);
-            cmp.keyCode = player1KeyMap[player1Index % player1KeyMap.Length];
-            player1Index++;
-        }
-        else
-        {
-            skillMgr2.SpawnSkill(item, player2KeyMap[player2Index%player2KeyMap.Length],cmp);
-            cmp.keyCode = player2KeyMap[player2Index % player2KeyMap.Length];
-            player2Index++;
-        }
+        components.Add(cmp);
+        
 
-            
-        
-        
 
         return cmp;
     }
+    
+    
+    
+    
 
-
+    // public void DestroyComponent(GameObject SeletingObject,bool isPlayer1)
+    // {
+    //     var cmp = SeletingObject.GetComponent<ComponentBase>();
+    //     if (cmp is ITriggerComponent || cmp is IHoldComponent)
+    //     {
+    //         if (isPlayer1)
+    //         {
+    //             skillMgr1.RemoveSkill(cmp);
+    //         }
+    //         else
+    //         {
+    //             skillMgr2.RemoveSkill(cmp);
+    //         }
+    //     }
+    //     Destroy(SeletingObject);
+    // }
     public void StartGame()
     {
         GenerateComponentsJoint(slotSystem1.m_objectList, slotSystem1.GridMap);
         GenerateComponentsJoint(slotSystem2.m_objectList, slotSystem2.GridMap);
         onGameStart?.Invoke();
-        
+            player1.GetComponent<CircleCollider2D>().enabled = true;
+            player2.GetComponent<CircleCollider2D>().enabled = true;
+            player1.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            player2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            distanceText1.enabled = true;
+            distanceText2.enabled = true;
+
+            foreach (var component in components)
+            {
+                if (component.isPlayer1)
+                {
+                    skillMgr1.SpawnSkill(component.detail, player1KeyMap[player1Index % player1KeyMap.Length],component);
+                    component.keyCode = player1KeyMap[player1Index % player1KeyMap.Length];
+                    if(component is ITriggerComponent|| component is IHoldComponent)player1Index++;
+                }
+                else
+                {
+                    skillMgr2.SpawnSkill(component.detail, player2KeyMap[player2Index%player2KeyMap.Length],component);
+                    component.keyCode = player2KeyMap[player2Index % player2KeyMap.Length];
+                    if(component is ITriggerComponent|| component is IHoldComponent)player2Index++;
+                }
+
+            }
+
+            started = true;
     }
 
     

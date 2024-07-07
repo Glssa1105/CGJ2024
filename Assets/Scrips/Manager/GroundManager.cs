@@ -28,6 +28,7 @@ public class GroundManager : SingletonMono<GroundManager>
             randomSequence[i] = Random.Range(0, groundPrefabs.Count);
         }
 
+        randomSequence[0] = 0;
         // 清除现有地面
         foreach (Transform child in transform)
         {

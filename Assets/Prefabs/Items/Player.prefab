@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6215939975512234976}
   - component: {fileID: 4276251607245796858}
   - component: {fileID: -3726909506657667124}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,10 +134,10 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.05
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: ef55d41b5e5cb054ca44f7f0f604c14b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

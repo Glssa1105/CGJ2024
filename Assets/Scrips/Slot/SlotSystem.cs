@@ -83,6 +83,10 @@ public class SlotSystem : MonoBehaviour
     public List<GameObject> GridList;
 
 
+    public Sprite normalSprite;
+    
+    public Sprite activeSprite;
+
 
     private void Awake()
     {
@@ -338,9 +342,9 @@ public class SlotSystem : MonoBehaviour
             for(int j = 0;j<m_GirdMap_Y;j++)
             {
                 if(i == ActiveGrid.x && j == ActiveGrid.y)
-                GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().color = Color.white;
+                GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().sprite = activeSprite;
                 else
-                GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().color = Color.blue;
+                GridList[j * m_GirdMap_X + i].GetComponent<SpriteRenderer>().sprite = normalSprite;
             }
         }
 

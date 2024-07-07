@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdab98fa6923884469e290da33019708, type: 3}
+  m_Name: ShuiHu
+  m_EditorClassIdentifier: 
+  id: 6
+  name: "\u6C34\u58F6"
+  icon: {fileID: 21300000, guid: 7117db241d863c84dbf31f88c0fbebbd, type: 3}
+  type: 2
+  prefeb: {fileID: 3671837622907248040, guid: 2e1cd532e690e7242b9978d8e0faca33, type: 3}
+  biasList:
+  - x: 0
+    y: 0
+    Object_index: 0
+  price: 1

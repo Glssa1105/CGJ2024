@@ -6,9 +6,11 @@ using UnityEngine;
 public class Item:ScriptableObject
 {
     public int id;
+    public string name;
     public Sprite icon;
     public EDirType type;
     public GameObject prefeb;
     public Grid[] biasList;
     public int price;
+    public string description;
 }

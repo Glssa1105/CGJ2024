@@ -48,7 +48,29 @@ public class SkillManager : MonoBehaviour
             holdMap.Remove(item);
         }
     }
-
+    //
+    // public void RemoveSkill(ComponentBase cmp)
+    // {
+    //     if (cmp is ITriggerComponent trigger)
+    //     {
+    //         if (triggerMap.ContainsKey(trigger))
+    //         {
+    //             
+    //             Destroy(triggerMap[trigger].gameObject);
+    //             triggerMap.Remove(trigger);
+    //         }
+    //     }else if (cmp is IHoldComponent hold)
+    //     {
+    //         if (holdMap.ContainsKey(hold))
+    //         {
+    //             
+    //             Destroy(holdMap[hold].gameObject);
+    //             holdMap.Remove(hold);
+    //         }
+    //     }
+    //     
+    //     
+    // }
 
     public void SpawnSkill<T>(Item item,KeyCode keyName, T obj)
     {
