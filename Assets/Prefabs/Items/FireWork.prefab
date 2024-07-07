@@ -174,5 +174,6 @@ MonoBehaviour:
   isPlayer1: 0
   detail: {fileID: 11400000, guid: 22a64bb9723e21e43b2115b20f46cdae, type: 2}
   keyCode: 0
+  started: 0
   maxEnergy: 3
-  force: 100
+  force: 50
