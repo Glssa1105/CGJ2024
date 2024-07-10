@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class ComponentManager : SingletonMono<ComponentManager>
@@ -58,6 +59,9 @@ public class ComponentManager : SingletonMono<ComponentManager>
     public GameObject EndPanel;
 
     public GameObject num;
+
+    public Image playerImage;
+    public Sprite player1Win, player2Win;
     
     private bool started;
     
@@ -70,7 +74,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
         playe2xTemp = player2.transform.position.x;
         baseFontSize = distanceText1.fontSize;
 
-        int money = Random.Range(2, 16);
+        int money = Random.Range(2, 12);
         MarketSystem1.Money = money * 5;
         MarketSystem2.Money = money * 5;
 
@@ -83,10 +87,10 @@ public class ComponentManager : SingletonMono<ComponentManager>
         //     GenerateComponentsJoint(GetComponent<SlotSystem>().m_objectList, GetComponent<SlotSystem>().GridMap);
         // }
         //
-        // if (Input.GetKeyDown(KeyCode.I))
-        // {
-        //     onGameStart?.Invoke();
-        // }
+        if (Input.GetKey(KeyCode.F5))
+        {
+            RestartGame();
+        }
         
         if(!started)return;
 
@@ -101,7 +105,8 @@ public class ComponentManager : SingletonMono<ComponentManager>
         
         distanceText2.fontSize = baseFontSize + (int) (distance2 /10)+Mathf.Sin(timer)*5;
 
-        if(lastDistance1>= distance1)
+        Debug.Log((lastDistance1 - distance1)/Time.deltaTime);
+        if((Mathf.Abs(lastDistance1 - distance1)/Time.deltaTime)<1.25f)
         {
             timer1 += Time.deltaTime;
         }
@@ -109,7 +114,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
         {
             timer1 = 0;
         }
-        if(lastDistance2>= distance2)
+        if((Mathf.Abs(lastDistance2 - distance2)/Time.deltaTime)<1.25f)
         {
             timer2 += Time.deltaTime;
         }
@@ -118,7 +123,7 @@ public class ComponentManager : SingletonMono<ComponentManager>
             timer2 = 0;
         }
 
-        if (timer1 >= 5&&timer2>=5&&distance1!=0&&distance2!=0)
+        if (timer1 >= 8&&timer2>=8&&distance1!=0&&distance2!=0)
         {
             EndGame();
         }
@@ -163,12 +168,14 @@ public class ComponentManager : SingletonMono<ComponentManager>
         
         if (distance1 > distance2)
         {
-            EndPanel.GetComponentInChildren<TMP_Text>().text = $"Player1 Win!\n 历史最高成绩：{Score.MaxScore}";
+            playerImage.sprite = player1Win;
         }
         else
         {
-            EndPanel.GetComponentInChildren<TMP_Text>().text =$"Player2 Win!\n 历史最高成绩：{Score.MaxScore}";
+            playerImage.sprite = player2Win;
+            
         }
+            EndPanel.GetComponentInChildren<TMP_Text>().text =$"历史最高成绩：{Score.MaxScore}";
         
     }
     
@@ -208,22 +215,15 @@ public class ComponentManager : SingletonMono<ComponentManager>
     
     
 
-    // public void DestroyComponent(GameObject SeletingObject,bool isPlayer1)
-    // {
-    //     var cmp = SeletingObject.GetComponent<ComponentBase>();
-    //     if (cmp is ITriggerComponent || cmp is IHoldComponent)
-    //     {
-    //         if (isPlayer1)
-    //         {
-    //             skillMgr1.RemoveSkill(cmp);
-    //         }
-    //         else
-    //         {
-    //             skillMgr2.RemoveSkill(cmp);
-    //         }
-    //     }
-    //     Destroy(SeletingObject);
-    // }
+    public void DestroyComponent(GameObject SeletingObject)
+    {
+        if (components.Contains(SeletingObject.GetComponent<ComponentBase>()))
+        {
+            Debug.Log(123);
+            components.Remove(SeletingObject.GetComponent<ComponentBase>());
+            Destroy(SeletingObject);
+        }
+    }
     public void StartGame()
     {
         GenerateComponentsJoint(slotSystem1.m_objectList, slotSystem1.GridMap);

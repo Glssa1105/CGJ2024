@@ -101,10 +101,10 @@ public class ComponentBase : MonoBehaviour
                 transform.localRotation=Quaternion.Euler(0,0,180);
                 break;
             case EGridRotate.LEFT:
-                transform.localRotation=Quaternion.Euler(0,0,-90);
+                transform.localRotation=Quaternion.Euler(0,0,90);
                 break;
             case EGridRotate.RIGHT:
-                transform.localRotation=Quaternion.Euler(0,0,90);
+                transform.localRotation=Quaternion.Euler(0,0,-90);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(target), target, null);

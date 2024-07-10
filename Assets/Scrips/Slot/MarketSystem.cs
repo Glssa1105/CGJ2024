@@ -156,17 +156,18 @@ public class MarketSystem : MonoBehaviour
         {
             m_objectList[i].GetComponent<SpriteRenderer>().sprite = itemList[i].icon;
             m_objectList[i].transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text =
-                itemList[i].name + ":" + itemList[i].price + "$";
+                itemList[i].itemName + ":" + itemList[i].price + "$";
             if(i == m_CurrentIndex)
             {
                 m_objectList[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = activeSprite;
+                description.text = itemList[i].description;
             }
             else
             {
                 m_objectList[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = normalSprite;
             }
 
-            description.text = itemList[i].description;
+
         }
     }
 

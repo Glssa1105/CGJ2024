@@ -198,4 +198,4 @@ MonoBehaviour:
   keyCode: 0
   started: 0
   maxEnergy: 50
-  force: 5
+  force: 10

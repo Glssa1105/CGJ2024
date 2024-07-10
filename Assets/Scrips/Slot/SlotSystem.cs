@@ -2,11 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.XR;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
-using static UnityEditor.Progress;
+
 
 public enum EGridRotate
 {
@@ -461,7 +458,7 @@ public class SlotSystem : MonoBehaviour
             SeletingIndex = -1;
             marketSystem.SellItem(SeletingCB.detail);
             SeletingCB = null;
-            Destroy(SeletingObject);
+            ComponentManager.Instance.DestroyComponent(SeletingObject);
             SeleteRotate = 0;
             
         }

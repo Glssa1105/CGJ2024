@@ -175,5 +175,5 @@ MonoBehaviour:
   detail: {fileID: 11400000, guid: 60205a9bb3898ec4e8664faa57d6e736, type: 2}
   keyCode: 0
   started: 0
-  maxEnergy: 50
-  force: 10
+  maxEnergy: 30
+  force: 15
